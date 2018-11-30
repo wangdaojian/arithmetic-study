@@ -8,12 +8,12 @@ package com.daojian.study.arithmetic.graph;
 public class Edge<Te> {
 	Te data; //数据
 	int weight; //权重
-	enum EStatus{UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD}
-	EStatus status; //类型
+	enum EType {UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD}
+	EType type; //类型
 	public Edge(Te d, int w) {
 		this.data = d;
 		this.weight = w;
-		this.status = EStatus.UNDETERMINED;
+		this.type = EType.UNDETERMINED;
 	}
 	
 	

@@ -7,4 +7,7 @@ package com.daojian.study.arithmetic.graph;
 public class Vertex<Tv> {
 	Tv data; //数据
 	int inDegree, outDegree; //出度 入度
+	public enum VStatus {UNDISCOVERED, DISCOVERED, VISITED}
+	VStatus status; //状态
+	
 }

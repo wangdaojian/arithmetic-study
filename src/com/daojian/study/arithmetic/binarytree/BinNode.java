@@ -1,5 +1,7 @@
 package com.daojian.study.arithmetic.binarytree;
 
+import java.util.Stack;
+
 /**
  * @Description 二叉树节点
  * @author wangdaojian
@@ -9,6 +11,8 @@ public class BinNode<T> {
 	BinNode<T> parent, lc, rc; //父亲 左右孩子节点
 	T data; //数据域
 	int height; //高度
+	
+	public BinNode() {}
 	
 	public BinNode(T data, BinNode<T> parent) {
 		this.data = data;
@@ -56,6 +60,25 @@ public class BinNode<T> {
 	}
 	
 	/**
+	* @Description 非递归方式 子树先序遍历 
+	* @param 
+	* @return void    返回类型
+	 */
+	void travPre() {
+		StringBuffer sb = new StringBuffer();
+		Stack<BinNode<T>> s = new Stack<>();
+		BinNode<T> x = this;
+		s.push(x);
+		while(!s.isEmpty()) {
+			x = s.pop();
+			sb.append(x.data + ", ");
+			if(x.rc != null) s.push(x.rc);
+			if(x.lc != null) s.push(x.lc);
+		}
+		System.out.println(sb.substring(0, sb.length() - 2));
+	}
+	
+	/**
 	* @Description 子树层次遍历
 	* @param 
 	* @return void    返回类型
@@ -64,14 +87,6 @@ public class BinNode<T> {
 		
 	}
 	
-	/**
-	* @Description 子树先序遍历 
-	* @param 
-	* @return void    返回类型
-	 */
-	void travPre() {
-		
-	}
 	
 	/**
 	* @Description 子树中序遍历

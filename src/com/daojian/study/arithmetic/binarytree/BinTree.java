@@ -10,6 +10,12 @@ public class BinTree<T> {
 	protected int _size; //规模
 	protected BinNode<T> _root; //根节点
 	
+	public BinTree(BinNode<T> root) {
+		this._root = root;
+		this._size++;
+	}	
+	
+	public BinTree() {}
 	/**
 	* @Description 更新节点x的高度
 	* @param x
@@ -154,6 +160,23 @@ public class BinTree<T> {
 	}
 	
 	/**
+	* @Description 递归实现先序 遍历
+	* @param x
+	 */
+	void traversePre(BinNode<T> x) {
+		if(x == null) return;
+		System.out.print(x.data + ", ");
+		traversePre(x.lc);
+		traversePre(x.rc);
+	}
+	
+	void travPre() {
+		if(_root != null) {
+			_root.travPre();
+		}
+	}
+	
+	/**
 	* @Description 节点高度 约定空树的高度为 -1
 	* @param @param node
 	* @param @return
@@ -174,6 +197,4 @@ public class BinTree<T> {
 	BinNode<T> root() {
 		return _root;
 	}
-	
-	
 }

@@ -119,12 +119,12 @@ public class GraphMatrix<Tv, Te>{
 			if(exists(i, j)) 
 				V.get(j).inDegree--;
 		}
-		
+		//删除第i行
 		E.remove(i);
 		//备份该顶点，然后删除
 		Tv eBak = V.get(i).data;
 		V.remove(i);
-		
+		//删除所有入边 和第i列
 		for(int j=0; j<V.size(); j++) {
 			if(E.get(j).remove(i) != null) {
 				V.get(j).outDegree--;

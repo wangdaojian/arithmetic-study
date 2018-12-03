@@ -13,5 +13,9 @@ public class Test {
 		tree.traversePre(root);
 		System.out.println();
 		tree.travPre();
+		tree.travPre_I2();
+		tree.traverseIn(root);
+		System.out.println();
+
 	}
 }

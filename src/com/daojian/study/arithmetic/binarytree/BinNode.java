@@ -78,6 +78,27 @@ public class BinNode<T> {
 		System.out.println(sb.substring(0, sb.length() - 2));
 	}
 	
+	
+	private void visitAlongLeftBranch(BinNode<T> x, Stack<BinNode<T>> s, StringBuffer sb) {
+		while(x != null) {
+			sb.append(x.data).append(" ,");
+			s.push(x.rc);
+			x = x.lc;
+		}
+	}
+	
+	void travPre_I2() {
+		Stack<BinNode<T>> s = new Stack<>();
+		StringBuffer sb = new StringBuffer();
+		BinNode<T> x = this;
+		while(true) {
+			visitAlongLeftBranch(x, s, sb);
+			if(s.isEmpty()) break;
+			x = s.pop();
+		}
+		System.out.println(sb.substring(0, sb.length()-2));
+	}
+	
 	/**
 	* @Description 子树层次遍历
 	* @param 

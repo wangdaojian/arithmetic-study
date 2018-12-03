@@ -170,9 +170,26 @@ public class BinTree<T> {
 		traversePre(x.rc);
 	}
 	
+	/**
+	 * @Description 递归中序遍历
+	 * @param x
+	 */
+	void traverseIn(BinNode<T> x) {
+		if(x == null) return;
+		traverseIn(x.lc);
+		System.out.print(x.data + ", ");
+		traverseIn(x.rc);
+	}
+	
 	void travPre() {
 		if(_root != null) {
 			_root.travPre();
+		}
+	}
+	
+	void travPre_I2() {
+		if(_root != null) {
+			_root.travPre_I2();
 		}
 	}
 	

@@ -56,7 +56,25 @@ public class BinNode<T> {
 	* @return BinNode<T>    返回类型
 	 */
 	BinNode<T> succ() {
-		return null;
+		BinNode<T> s = this;
+		if(rc != null) {//若有右孩子，则直接后继必在右子树中
+			s = rc;
+			while(s.lc != null) //右子树中最小节点
+				s = s.lc;
+		} else {//否则 后继应是“将当前节点包含于其左子树中的最低祖先”
+			while(isRChild(s)) //根节点是右则继续向上
+				s = s.parent;
+			s = s.parent;
+		}
+		return s;
+	}
+	
+	private boolean isRChild(BinNode<T> x) {
+		if(x.parent != null) {
+			return x == x.parent.rc ? true : false;
+		}else {
+			return false;
+		}
 	}
 	
 	/**
@@ -99,6 +117,7 @@ public class BinNode<T> {
 		System.out.println(sb.substring(0, sb.length()-2));
 	}
 	
+	
 	/**
 	* @Description 子树层次遍历
 	* @param 
@@ -109,13 +128,29 @@ public class BinNode<T> {
 	}
 	
 	
+	private void goAlongLeftBranch(BinNode<T> x, Stack<BinNode<T>> s) {
+		while(x != null) {
+			s.push(x);
+			x = x.lc;
+		}
+	}
+	
 	/**
 	* @Description 子树中序遍历
 	* @param 
 	* @return void    返回类型
 	 */
 	void travIn() {
-		
+		Stack<BinNode<T>> s = new Stack<>();
+		StringBuffer sb = new StringBuffer();
+		BinNode<T> x = this;
+		while(true) {
+			goAlongLeftBranch(x, s);
+			if(s.isEmpty()) break;
+			x = s.pop();
+			sb.append(x.data).append(", ");
+			x = x.rc;
+		}
 	}
 	
 	/**

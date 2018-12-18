@@ -121,6 +121,10 @@ public class BinTree<T> {
 		return n;
 	}
 	
+	/**
+	 * @Description  切断来自父节点的指针
+	 * @param x
+	 */
 	public void fromParentTo(BinNode<T> x) {
 		if(x == x.parent.lc) 
 			x.parent.lc = null;
@@ -181,6 +185,17 @@ public class BinTree<T> {
 		traverseIn(x.rc);
 	}
 	
+	/**
+	 * @Description 递归后序遍历
+	 * @param x
+	 */
+	void traversePost(BinNode<T> x) {
+		if(x == null) return;
+		traversePost(x.lc);
+		traversePost(x.rc);
+		System.out.print(x.data + ", ");
+	}
+	
 	void travPre() {
 		if(_root != null) {
 			_root.travPre();
@@ -190,6 +205,12 @@ public class BinTree<T> {
 	void travPre_I2() {
 		if(_root != null) {
 			_root.travPre_I2();
+		}
+	}
+	
+	void travIn() {
+		if(_root != null) {
+			_root.travIn();
 		}
 	}
 	

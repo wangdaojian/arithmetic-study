@@ -9,6 +9,7 @@ public class Test {
 		tree.insertAsLC(n1, 3);
 		tree.insertAsRC(n1, 4);
 		tree.insertAsLC(n2, 5);
+		System.out.println(n2.succ());
 		
 		tree.traversePre(root);
 		System.out.println();
@@ -16,6 +17,8 @@ public class Test {
 		tree.travPre_I2();
 		tree.traverseIn(root);
 		System.out.println();
-
+		tree.travIn();
+		tree.traversePost(root);
+		
 	}
 }

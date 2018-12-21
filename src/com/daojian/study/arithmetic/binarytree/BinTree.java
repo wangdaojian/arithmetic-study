@@ -214,6 +214,18 @@ public class BinTree<T> {
 		}
 	}
 	
+	void travPost() {
+		if(_root != null) {
+			_root.travPost();
+		}
+	}
+	
+	void travLevel() {
+		if(_root != null) {
+			_root.travLevel();
+		}
+	}
+	
 	/**
 	* @Description 节点高度 约定空树的高度为 -1
 	* @param @param node

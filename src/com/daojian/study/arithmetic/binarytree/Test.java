@@ -19,6 +19,8 @@ public class Test {
 		System.out.println();
 		tree.travIn();
 		tree.traversePost(root);
-		
+		System.out.println();
+		tree.travPost();
+		tree.travLevel();
 	}
 }

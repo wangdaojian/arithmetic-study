@@ -1,5 +1,7 @@
 package com.daojian.study.arithmetic.binarytree;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -124,7 +126,20 @@ public class BinNode<T> {
 	* @return void    返回类型
 	 */
 	void travLevel() {
-		
+		Queue<BinNode<T>> queue = new LinkedList<>();
+		StringBuffer sb = new StringBuffer();
+		queue.offer(this);
+		while(!queue.isEmpty()) {
+			BinNode<T> x = queue.poll();
+			sb.append(x.data + ", ");
+			if(x.lc != null) {
+				queue.offer(x.lc);
+			}
+			if(x.rc != null) {
+				queue.offer(x.rc);
+			}
+		}
+		System.out.println(sb.substring(0, sb.length()-2));
 	}
 	
 	
@@ -153,12 +168,38 @@ public class BinNode<T> {
 		}
 	}
 	
+	
+	void goToHLVFL(Stack<BinNode<T>> s) {
+		BinNode<T> temp = null;
+		while((temp = s.peek()) != null) { //自定向下反复检查栈顶节点
+			if(temp.lc != null) {
+				if(temp.rc != null)
+					s.push(temp.rc);
+				s.push(temp.lc);
+			}else {
+				s.push(temp.rc);
+			}
+		}
+		s.pop();
+	}
+	
 	/**
 	* @Description 子树后序遍历
 	* @param @return
 	* @return viod    返回类型
 	 */
 	void travPost() {
-		
+		Stack<BinNode<T>> stack = new Stack<>();
+		StringBuffer sb = new StringBuffer();
+		BinNode<T> x = this;
+		stack.push(x);
+		while(!stack.isEmpty()) {
+			if(stack.peek() != x.parent) {
+				goToHLVFL(stack);
+			}
+			x = stack.pop();
+			sb.append(x.data + ", ");
+		}
+		System.out.println(sb.substring(0, sb.length()-2));
 	}
 }

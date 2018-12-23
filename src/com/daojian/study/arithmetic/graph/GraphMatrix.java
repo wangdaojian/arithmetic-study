@@ -184,6 +184,51 @@ public class GraphMatrix<Tv, Te>{
 		return clock;
 	}
 	
-	
+	/**
+	* @Description 如果存在多个不联通的图
+	* @param s
+	 */
+	void bfd(int s) {
+		reset();
+		int clock = 0;
+		int v = s;
+		do {
+			if(V.get(v).status == VStatus.UNDISCOVERED) {
+				clock = BFS(v, clock);
+			}
+		}while(s != (v = (++v % V.size())));
+		System.out.println("clock = " + clock);
+	}
+	/**
+	* @Description 深度优先算法
+	* @param v
+	* @param clock
+	* @return
+	 */
+	int DFS(int v, int clock) {
+		Vertex<Tv> tv = V.get(v);
+		tv.dTime = ++clock;
+		tv.status = VStatus.DISCOVERED;
+		for(int u=firstNbr(v); -1<u; u=nextNbr(v, u)) {
+			Edge<Te> te = E.get(v).get(u);
+			Vertex<Tv> tu = V.get(u);
+			switch (tu.status) {
+			case UNDISCOVERED:
+				te.type = EType.TREE;
+				tu.parent = v;
+				clock = DFS(u, clock);
+				break;
+			case DISCOVERED:
+				te.type = EType.BACKWARD;
+				break;
+			default:
+				te.type = tv.dTime < tu.dTime ? EType.FORWARD : EType.CROSS;
+				break;
+			}
+		}
+		tv.status = VStatus.VISITED;
+		tv.fTime = ++clock;
+		return clock;
+	}
 	
 }

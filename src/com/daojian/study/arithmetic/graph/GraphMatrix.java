@@ -1,8 +1,8 @@
 package com.daojian.study.arithmetic.graph;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Vector;
-
-import javax.net.ssl.SSLEngineResult.Status;
 
 import com.daojian.study.arithmetic.graph.Edge.EType;
 import com.daojian.study.arithmetic.graph.Vertex.VStatus;
@@ -19,6 +19,15 @@ public class GraphMatrix<Tv, Te>{
 	private Vector<Vector<Edge<Te>>> E = new Vector<Vector<Edge<Te>>>(); //边集
 	
 	private int e; //边数
+	
+	private boolean hasDirect = false; //默认无向图
+	
+	public GraphMatrix(boolean direct) {
+		hasDirect = direct;
+	}
+	
+	public GraphMatrix() {
+	}
 	
 	/**
 	 * 第一个邻居
@@ -46,7 +55,11 @@ public class GraphMatrix<Tv, Te>{
 	 * @return
 	 */
 	boolean exists(int i, int j) {
-		return 0 <= i && i < V.size() && 0 <= j && j < V.size() && E.get(i).get(j) != null;
+		if(hasDirect) {
+			return 0 <= i && i < V.size() && 0 <= j && j < V.size() && E.get(i).get(j) != null;
+		}else {
+			return 0 <= i && i < V.size() && 0 <= j && j < V.size() && (E.get(i).get(j) != null || E.get(j).get(i) != null);
+		}
 	}
 	
 	/**
@@ -74,9 +87,14 @@ public class GraphMatrix<Tv, Te>{
 		if(exists(i, j)) return;
 		Edge<Te> te = new Edge<Te>(edge, weigth);
 		E.get(i).set(j, te);
+		if(!hasDirect) {
+			E.get(j).set(i, te);
+		}else {
+			V.get(i).outDegree++;
+			V.get(j).inDegree++;
+		}
 		e++;
-		V.get(i).outDegree++;
-		V.get(j).inDegree++;
+		
 	}
 	/**
 	 * 删除边
@@ -86,9 +104,14 @@ public class GraphMatrix<Tv, Te>{
 	 */
 	Te removeEdge(int i, int j) {
 		Te eBak = E.get(i).get(j).data;
+		E.get(i).set(j, null);
+		if(!hasDirect) {
+			E.get(j).set(i, null);
+		}else {
+			V.get(i).outDegree--;
+			V.get(j).inDegree--;
+		}
 		e--;
-		V.get(i).outDegree--;
-		V.get(j).inDegree--;
 		return eBak;
 		
 	}
@@ -102,9 +125,7 @@ public class GraphMatrix<Tv, Te>{
 		}
 		V.add(new Vertex<>(tv));
 		Vector<Edge<Te>> e = new Vector<>();
-		for(int j=0; j<V.size(); j++) {
-			e.add(null);
-		}
+		e.setSize(V.size());
 		E.add(e);
 	}
 	
@@ -132,5 +153,37 @@ public class GraphMatrix<Tv, Te>{
 		}
 		return eBak;
 	}
+	
+	/**
+	* @Description 广度优先遍历
+	* @param v 顶点索引
+	* @return
+	 */
+	int BFS(int v, int clock) {
+		Queue<Integer> Q = new LinkedList<Integer>();
+		StringBuffer sb = new StringBuffer();
+		V.get(v).status = VStatus.DISCOVERED;
+		Q.add(v);
+		while(!Q.isEmpty()) {
+			v = Q.remove();
+			V.get(v).dTime = ++clock;
+			sb.append(V.get(v).data + ", ");
+			for(int u=firstNbr(v); -1<u; u=nextNbr(v, u)) {//考察v的每一个邻居
+				if(V.get(u).status == VStatus.UNDISCOVERED) { //若u尚未被发现，则发现该节点， 引入树边
+					V.get(u).status = VStatus.DISCOVERED;
+					Q.add(u);
+					E.get(v).get(u).type = EType.TREE;
+					V.get(u).parent = v;
+				}else { //若u已被发现（正在队列中）， 或者已访问完毕（已出队列）， 则将（v, u）归位跨边
+					E.get(v).get(u).type = EType.CROSS;
+				}
+			}
+			V.get(v).status = VStatus.VISITED;
+		}
+		System.out.println(sb);
+		return clock;
+	}
+	
+	
 	
 }
